@@ -4,11 +4,11 @@ Route UDP data between sockets in realtime
 ## Table of contents
 - [RMRP](#rmrp)
 	- [ADD](#add)
+	- [ROUTE](#route)
 
 ## RMRP
-Realtime Media Routing Protocol
-
-The router is listening for commands as text sent directly over TCP to port 3000.
+**Realtime Media Routing Protocol**
+The router is listening for commands as text sent directly over TCP to port 3000 by default.
 
 ### ADD
 `ADD <SERVER|CLIENT> <addr>`  
