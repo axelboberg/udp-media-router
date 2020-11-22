@@ -8,12 +8,13 @@ Route UDP data between sockets in realtime
 	- [ROUTE](#route)
 
 ## RMRP
-**Realtime Media Routing Protocol**
+**Realtime Media Routing Protocol**  
 The router is listening for commands as text sent directly over TCP to port 3000 by default.
 
 ### ADD
 `ADD <SERVER|CLIENT> <addr>`  
 
+**Example:**  
 Listen to packets on port 3001  
 `ADD SERVER :3001`  
 
@@ -24,7 +25,8 @@ Try to connect to an open port on localhost
 `REMOVE <addr>`  
 Removes any connections for the specified address and stops forwarding/receiving data to it. Essentially the opposite of `ADD`.
 
-Remove a connection for address `localhost:3002`
+**Example:**  
+Remove a connection for address `localhost:3002`  
 `REMOVE localhost:3002`  
 
 Remove a connection for address `:3001`  
