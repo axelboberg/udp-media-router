@@ -46,6 +46,6 @@ func onListener (listener io.Reader) {
 }
 
 func main () {	
-	tcp.CreateServer(":3000", onListener)
+	tcp.CreateServer(":8848", onListener)
 	log.Println("Go is alive")
 }
