@@ -1,9 +1,10 @@
 package udp
+
 import (
 	"sync"
 )
 
-type SafeRouting struct {
+type Routing struct {
 	mu sync.Mutex
 	up map[string]string
 	down map[string]map[string]bool
@@ -22,7 +23,7 @@ func keys (m map[string]bool) []string {
 // Insert a new routing record safely
 // by making sure that a destination
 // can only have one source at a time
-func (r *SafeRouting) Route (from string, to string) {
+func (r *Routing) Route (from string, to string) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	
@@ -45,7 +46,7 @@ func (r *SafeRouting) Route (from string, to string) {
 
 // Get all destinations for a
 // source as a slice of strings
-func (r *SafeRouting) Destinations (host string) []string {
+func (r *Routing) Destinations (host string) []string {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return keys(r.down[host])

@@ -38,6 +38,19 @@ var verbs = map[string]validator{
 		
 		return parts, nil
 	},
+	
+	// REMOVE
+	// Format:
+	//	REMOVE <addr>
+	// Example:
+	//	REMOVE :3001							- Removes the server or client created for the address :3001
+	//	REMOVE localhost:3002			- Removes the server or client created for the address localhost:3002
+	"REMOVE": func (parts []string) ([]string, error) {
+		if len(parts) != 2 {
+			return nil, errors.New("Malformed command. Should follow format \"REMOVE <addr>\"")
+		}
+		return parts, nil
+	},
 }
 
 // Parse a string as a RMRP-command

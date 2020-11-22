@@ -4,6 +4,7 @@ Route UDP data between sockets in realtime
 ## Table of contents
 - [RMRP](#rmrp)
 	- [ADD](#add)
+	- [REMOVE](#remove)
 	- [ROUTE](#route)
 
 ## RMRP
@@ -18,6 +19,16 @@ Listen to packets on port 3001
 
 Try to connect to an open port on localhost  
 `ADD CLIENT localhost:3002`
+
+### REMOVE  
+`REMOVE <addr>`  
+Removes any connections for the specified address and stops forwarding/receiving data to it. Essentially the opposite of `ADD`.
+
+Remove a connection for address `localhost:3002`
+`REMOVE localhost:3002`  
+
+Remove a connection for address `:3001`  
+`REMOVE :3001`
 
 ### ROUTE
 `ROUTE <source> <destination>`

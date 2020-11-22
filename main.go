@@ -23,14 +23,23 @@ func onListener (listener io.Reader) {
 			cerr = parseErr
 		} else {
 			switch parts[0] {
+				
+			// ROUTE
 			case "ROUTE":
 				udp.Route(parts[1], parts[2])
+				
+			// ADD
 			case "ADD":
 				if parts[1] == "SERVER" {
-					go udp.CreateServer(parts[2])	
+					go udp.CreateServer(parts[2])
 				} else {
 					go udp.CreateClient(parts[2])
 				}
+			
+			// REMOVE
+			case "REMOVE":
+				udp.Kill(parts[1])
+				
 			}
 		}
 	}

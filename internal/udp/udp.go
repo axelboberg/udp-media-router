@@ -5,12 +5,15 @@ import (
 	"log"
 )
 
-var conns = map[string]*net.UDPConn{}
-var routing = SafeRouting{up: make(map[string]string), down: make(map[string]map[string]bool)}
+var conns = Connections{conns: make(map[string]*net.UDPConn)}
+var routing = Routing{up: make(map[string]string), down: make(map[string]map[string]bool)}
 
-func dataLoop (conn_id string) {
-	for _, ok := conns[conn_id]; ok; {
-		conn := conns[conn_id]
+func dataLoop (addr string) {
+	for {
+		conn, ok := conns.Get(addr)
+		if !ok {
+			break
+		}
 		
 		buf := make([]byte, 4096)
 		n, _, err := conn.ReadFromUDP(buf)
@@ -26,10 +29,10 @@ func dataLoop (conn_id string) {
 		// by ReadFromUDP
 		conc := buf[0:n]
 		
-		recvs := routing.Destinations(conn_id)
+		recvs := routing.Destinations(addr)
 		
 		for _, recv := range recvs {
-			recv_conn, recv_ok := conns[recv];
+			recv_conn, recv_ok := conns.Get(recv);
 			if recv_ok {
 				recv_conn.Write(conc)
 			}	
@@ -38,7 +41,7 @@ func dataLoop (conn_id string) {
 }
 
 func CreateServer (port string) {
-	if _, ok := conns[port]; ok {
+	if _, ok := conns.Get(port); ok {
 		log.Print("[UDP] Port", port, "is already in use")
 		return
 	}
@@ -51,7 +54,7 @@ func CreateServer (port string) {
 		return
 	}
 
-	conns[port] = conn
+	conns.Add(port, conn)
 	dataLoop(port)
 }
 
@@ -64,14 +67,14 @@ func CreateClient (addr string) {
 		return
 	}
 	
-	conns[addr] = conn
+	conns.Add(addr, conn)
 	dataLoop(addr)
 }
 
-func Kill (conn string) {
-	if conns[conn] != nil {
-		conns[conn].Close()
-		conns[conn] = nil
+func Kill (addr string) {
+	if conn, ok := conns.Get(addr); ok {
+		conns.Remove(addr)
+		conn.Close()
 	}
 }
 
